@@ -51,15 +51,10 @@ public class HandFragment extends Fragment implements JassModelObserver {
 
 		Match currentMatch = game.getCurrentMatch();
 		
-		if (game.getCurrentMatch().getAnsage() == null) {
-			game.getCurrentMatch().setAnsage(new Ansage(HEARTS));
-		}
-		
 		List<Card> cardsInHand = currentMatch.getCards(mainActivity
 				.getHumanPlayerToken());
 
 		int i = 0;
-		
 		for (i = 0; i < cardsInHand.size(); i++) {
 			final Card card = cardsInHand.get(i);
 
@@ -73,7 +68,6 @@ public class HandFragment extends Fragment implements JassModelObserver {
 			});
 			button.setEnabled(currentMatch.isCardPlayable(card));
 		}
-		
 		while(i < 9) {
 			getButtonByIndex(i++).setVisibility(View.INVISIBLE);
 		}

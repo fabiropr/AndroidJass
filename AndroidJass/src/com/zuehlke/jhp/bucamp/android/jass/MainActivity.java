@@ -39,6 +39,8 @@ public class MainActivity extends Activity {
 		names.put(all.get(2), "Spock");
 		names.put(all.get(3), "Doctor Leonard McCoy");
 		strategy = new SimpleStrategyEngine().create();
+		
+		game.addObserver(new AnsageObserver(game, getHumanPlayerToken(), this));
 	}
 	
 	public String getName(PlayerToken token) {
@@ -46,7 +48,6 @@ public class MainActivity extends Activity {
 	}
 
 	public ObservableGame getGame() {
-		
 		return game;
 	}
 	
