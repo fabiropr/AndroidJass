@@ -1,5 +1,9 @@
 package com.zuehlke.jhp.bucamp.android.jass;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,13 +19,30 @@ public class MainActivity extends Activity {
 
 	private ObservableGame game;
 	private SimpleStrategy strategy;
+	
+	
+	private Map<PlayerToken, String> names = new HashMap<PlayerToken, String>();
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		game = new ObservableGame(new JassEngine().createJassGame());
+		
+		
+		names = new HashMap<PlayerToken, String>();
+		
+		List<PlayerToken> all = game.getPlayerRepository().getAll();
+		names.put(all.get(0), "DU");
+		names.put(all.get(1), "Kirk");
+		names.put(all.get(2), "Spock");
+		names.put(all.get(3), "Doctor Leonard McCoy");
 		strategy = new SimpleStrategyEngine().create();
+	}
+	
+	public String getName(PlayerToken token) {
+		return names.get(token);
 	}
 
 	public ObservableGame getGame() {

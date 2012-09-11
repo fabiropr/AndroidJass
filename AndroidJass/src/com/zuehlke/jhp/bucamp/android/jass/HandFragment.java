@@ -1,5 +1,7 @@
 package com.zuehlke.jhp.bucamp.android.jass;
 
+import static ch.mbaumeler.jass.core.card.CardSuit.HEARTS;
+
 import java.util.List;
 
 import android.app.Activity;
@@ -11,9 +13,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import ch.mbaumeler.jass.core.Game;
+import ch.mbaumeler.jass.core.Match;
 import ch.mbaumeler.jass.core.card.Card;
-import ch.mbaumeler.jass.core.card.CardSuit;
-import ch.mbaumeler.jass.core.card.CardValue;
+import ch.mbaumeler.jass.core.game.Ansage;
 import ch.mbaumeler.jass.core.game.PlayerToken;
 import ch.mbaumeler.jass.extended.ui.JassModelObserver;
 import ch.mbaumeler.jass.extended.ui.ObserverableMatch.Event;
@@ -22,7 +24,9 @@ public class HandFragment extends Fragment implements JassModelObserver {
 
 	private Game game;
 	private MainActivity mainActivity;
-
+	private CardUtil cardUtil = new CardUtil();
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -45,22 +49,37 @@ public class HandFragment extends Fragment implements JassModelObserver {
 
 	public void updated(Event event, PlayerToken playerToken, Object object) {
 
-		List<Card> cardsInHand = game.getCurrentMatch().getCards(
-				mainActivity.getHumanPlayerToken());
+		Match currentMatch = game.getCurrentMatch();
+		
+		if (game.getCurrentMatch().getAnsage() == null) {
+			game.getCurrentMatch().setAnsage(new Ansage(HEARTS));
+		}
+		
+		List<Card> cardsInHand = currentMatch.getCards(mainActivity
+				.getHumanPlayerToken());
 
-		for (int i = 0; i < cardsInHand.size(); i++) {
+		int i = 0;
+		
+		for (i = 0; i < cardsInHand.size(); i++) {
 			final Card card = cardsInHand.get(i);
 
 			Button button = getButtonByIndex(i);
-			button.setText(getSuitChar(card.getSuit()) + "\n" + toString(card.getValue()));
+			button.setText(cardUtil.toCardString(card));
+			button.setTextColor(cardUtil.color(card.getSuit()));
 			button.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					game.getCurrentMatch().playCard(card);
 				}
 			});
+			button.setEnabled(currentMatch.isCardPlayable(card));
+		}
+		
+		while(i < 9) {
+			getButtonByIndex(i++).setVisibility(View.INVISIBLE);
 		}
 	}
-
+	
+	
 	private Button getButtonByIndex(int index) {
 		switch (index) {
 		case 0:
@@ -86,47 +105,7 @@ public class HandFragment extends Fragment implements JassModelObserver {
 		return null;
 	}
 
-	private char getSuitChar(CardSuit cardSuit) {
 
-		switch (cardSuit) {
-		case CLUBS:
-			return 9827;
-		case SPADES:
-			return 9824;
-		case DIAMONDS:
-			return 9830;
-		case HEARTS:
-			return 9829;
-		}
-		return '?';
-
-	}
-
-	private String toString(CardValue value) {
-		switch (value) {
-
-		case SIX:
-			return "6";
-		case SEVEN:
-			return "7";
-		case EIGHT:
-			return "8";
-		case NINE:
-			return "9";
-		case TEN:
-			return "10";
-		case JACK:
-			return "J";
-		case QUEEN:
-			return "Q";
-		case KING:
-			return "K";
-		case ACE:
-			return "A";
-		default:
-			return null;
-		}
-	}
 
 	private Button button(int id) {
 		return (Button) mainActivity.findViewById(id);
