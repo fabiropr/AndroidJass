@@ -1,11 +1,15 @@
 package com.zuehlke.jhp.bucamp.android.jass;
 
+import static ch.mbaumeler.jass.core.card.CardSuit.DIAMONDS;
+import static ch.mbaumeler.jass.core.card.CardSuit.HEARTS;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.DragEvent;
@@ -63,8 +67,7 @@ public class TableFragment extends Fragment implements JassModelObserver,
 				.setText(mainActivity.getName(all.get(2)));
 		findTextView(R.id.player4Name)
 				.setText(mainActivity.getName(all.get(3)));
-		
-		
+
 		mainActivity.findViewById(R.id.tableFragment).setOnDragListener(this);
 	}
 
@@ -86,8 +89,9 @@ public class TableFragment extends Fragment implements JassModelObserver,
 		Match currentMatch = game.getCurrentMatch();
 		Ansage ansage = currentMatch.getAnsage();
 		if (ansage != null) {
-			((TextView) mainActivity.findViewById(R.id.trumpf))
-					.setText(CardUtil.getResourceFor(ansage));
+			TextView trumpfText = getTextView(R.id.trumpf);
+			trumpfText.setText(CardUtil.getResourceFor(ansage));
+			trumpfText.setTextColor(getResources().getColor(getColor(ansage)));
 		}
 		List<PlayedCard> cardsOnTable = currentMatch.getCardsOnTable();
 
@@ -103,6 +107,11 @@ public class TableFragment extends Fragment implements JassModelObserver,
 			textView.setTextColor(CardUtil
 					.color(playedCard.getCard().getSuit()));
 		}
+	}
+
+	private int getColor(Ansage ansage) {
+		return (ansage.isTrumpf(HEARTS) || ansage.isTrumpf(DIAMONDS)) ? R.color.red
+				: R.color.black;
 	}
 
 	public boolean onDrag(View table, DragEvent event) {

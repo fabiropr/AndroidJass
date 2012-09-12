@@ -10,19 +10,14 @@
         android:layout_width="match_parent"
         android:layout_gravity="center_horizontal" >
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1" />
+        <TextView android:layout_weight="1" />
 
         <TextView
             android:id="@+id/player3"
-            android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1" />
+        <TextView android:layout_weight="1" />
     </TableRow>
 
     <TableRow
@@ -30,19 +25,14 @@
         android:layout_width="match_parent"
         android:layout_gravity="center_horizontal" >
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1" />
+        <TextView android:layout_weight="1" />
 
         <TextView
             android:id="@+id/player3Name"
-            android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1" />
+        <TextView android:layout_weight="1" />
     </TableRow>
 
     <TableRow
@@ -52,20 +42,20 @@
 
         <TextView
             android:id="@+id/player4"
-            android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center" />
 
         <TextView
             android:id="@+id/trumpf"
-            android:layout_width="0dp"
             android:layout_weight="1"
-            android:background="#ffffff"
-            android:gravity="center" />
+       		android:text="a"
+            android:gravity="center" 
+            android:textAppearance="?android:attr/textAppearanceLarge" 
+            android:background="@drawable/trumpf"
+            />
 
         <TextView
             android:id="@+id/player2"
-            android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center" />
     </TableRow>
@@ -77,17 +67,13 @@
 
         <TextView
             android:id="@+id/player4Name"
-            android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1" />
+        <TextView android:layout_weight="1" />
 
         <TextView
             android:id="@+id/player2Name"
-            android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center" />
     </TableRow>
@@ -98,35 +84,30 @@
 
         <TextView
             android:id="@+id/empty41"
-            android:layout_width="0dp"
             android:layout_weight="1" />
 
         <TextView
             android:id="@+id/player1"
-            android:layout_width="0dp"
-            android:gravity="center" />
-
-        <TextView android:id="@+id/empty42" />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow6"
-        android:layout_width="match_parent"
-        android:layout_gravity="center_horizontal" >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/player1Name"
-            android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center" />
 
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/empty42"
             android:layout_weight="1" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow6"
+        android:layout_gravity="center_horizontal" >
+
+        <TextView android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/player1Name"
+            android:layout_weight="1"
+            android:gravity="center" />
+
+        <TextView android:layout_weight="1" />
     </TableRow>
 
 </TableLayout>

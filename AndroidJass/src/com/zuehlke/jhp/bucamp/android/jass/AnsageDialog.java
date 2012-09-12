@@ -18,7 +18,6 @@ public class AnsageDialog extends DialogFragment {
 
 	public AnsageDialog(Game game) {
 		this.game = game;
-
 	}
 
 	@Override
@@ -30,53 +29,25 @@ public class AnsageDialog extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
-		getDialog().setTitle("Choose ansage");
-		View v = inflater.inflate(R.layout.ansage_fragment, container, false);
 
-		getButton(R.id.selectEcken, v).setOnClickListener(
-				new OnClickListener() {
-					public void onClick(View v) {
-						ansage(new Ansage(CardSuit.DIAMONDS));
-					}
-				});
-		getButton(R.id.selectHerz, v).setOnClickListener(new OnClickListener() {
+		getDialog().setTitle("Ansage:");
+		View view = inflater
+				.inflate(R.layout.ansage_fragment, container, false);
+		addListener(R.id.selectEcken, view, new Ansage(CardSuit.DIAMONDS));
+		addListener(R.id.selectHerz, view, new Ansage(CardSuit.HEARTS));
+		addListener(R.id.selectKreuz, view, new Ansage(CardSuit.CLUBS));
+		addListener(R.id.selectSchaufel, view, new Ansage(CardSuit.SPADES));
+		addListener(R.id.selectObenabe, view, new Ansage(SpielModi.OBENABE));
+		addListener(R.id.selectUndeuffe, view, new Ansage(SpielModi.UNDEUFE));
+		return view;
+	}
+
+	private void addListener(int id, View view, final Ansage ansage) {
+		getButton(id, view).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				ansage(new Ansage(CardSuit.HEARTS));
+				ansage(ansage);
 			}
 		});
-		getButton(R.id.selectKreuz, v).setOnClickListener(
-				new OnClickListener() {
-					public void onClick(View v) {
-						ansage(new Ansage(CardSuit.CLUBS));
-					}
-				});
-		getButton(R.id.selectSchaufel, v).setOnClickListener(
-				new OnClickListener() {
-					public void onClick(View v) {
-						game.getCurrentMatch().setAnsage(
-								new Ansage(CardSuit.SPADES));
-					}
-				});
-		getButton(R.id.selectObenabe, v).setOnClickListener(
-				new OnClickListener() {
-					public void onClick(View v) {
-						ansage(new Ansage(SpielModi.OBENABE));
-					}
-				});
-		getButton(R.id.selectEcken, v).setOnClickListener(
-				new OnClickListener() {
-					public void onClick(View v) {
-						ansage(new Ansage(SpielModi.UNDEUFE));
-					}
-				});
-		getButton(R.id.selectEcken, v).setOnClickListener(
-				new OnClickListener() {
-					public void onClick(View v) {
-						ansage(new Ansage(CardSuit.DIAMONDS));
-					}
-				});
-		return v;
 	}
 
 	private void ansage(Ansage ansage) {

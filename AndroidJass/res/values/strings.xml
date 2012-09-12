@@ -20,4 +20,9 @@
     <string name="undeuffe" >\u2191</string>
     <string name="obenabe">\u2193</string>
     <string name="main_activity_title">Jass Game</string>
+    <string name="score_title">Score</string>
+    <string name="score_you_title">You:</string>
+    <string name="score_rival_title">Rival:</string>
+    <string name="score_points_initial">0</string>
+    
 </resources>
