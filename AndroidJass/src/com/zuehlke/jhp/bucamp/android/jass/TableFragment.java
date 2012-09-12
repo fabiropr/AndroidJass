@@ -6,24 +6,34 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnDragListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import ch.mbaumeler.jass.core.Game;
 import ch.mbaumeler.jass.core.Match;
+import ch.mbaumeler.jass.core.card.Card;
+import ch.mbaumeler.jass.core.card.CardSuit;
+import ch.mbaumeler.jass.core.card.CardValue;
 import ch.mbaumeler.jass.core.game.Ansage;
 import ch.mbaumeler.jass.core.game.PlayedCard;
 import ch.mbaumeler.jass.core.game.PlayerToken;
 import ch.mbaumeler.jass.extended.ui.JassModelObserver;
 import ch.mbaumeler.jass.extended.ui.ObserverableMatch.Event;
 
-public class TableFragment extends Fragment implements JassModelObserver {
+public class TableFragment extends Fragment implements JassModelObserver,
+		OnDragListener {
 
 	private Game game;
 	private MainActivity mainActivity;
 	private Map<PlayerToken, TextView> map;
+
+	boolean hasDropped = false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,11 +50,26 @@ public class TableFragment extends Fragment implements JassModelObserver {
 		List<PlayerToken> all = game.getPlayerRepository().getAll();
 
 		map = new HashMap<PlayerToken, TextView>();
-		map.put(all.get(0), (TextView) mainActivity.findViewById(R.id.player1));
-		map.put(all.get(1), (TextView) mainActivity.findViewById(R.id.player2));
-		map.put(all.get(2), (TextView) mainActivity.findViewById(R.id.player3));
-		map.put(all.get(3), (TextView) mainActivity.findViewById(R.id.player4));
+		map.put(all.get(0), findTextView(R.id.player1));
+		map.put(all.get(1), findTextView(R.id.player2));
+		map.put(all.get(2), findTextView(R.id.player3));
+		map.put(all.get(3), findTextView(R.id.player4));
 
+		findTextView(R.id.player1Name)
+				.setText(mainActivity.getName(all.get(0)));
+		findTextView(R.id.player2Name)
+				.setText(mainActivity.getName(all.get(1)));
+		findTextView(R.id.player3Name)
+				.setText(mainActivity.getName(all.get(2)));
+		findTextView(R.id.player4Name)
+				.setText(mainActivity.getName(all.get(3)));
+		
+		
+		mainActivity.findViewById(R.id.tableFragment).setOnDragListener(this);
+	}
+
+	private TextView findTextView(int id) {
+		return (TextView) mainActivity.findViewById(id);
 	}
 
 	private TextView getTextView(int id) {
@@ -78,6 +103,58 @@ public class TableFragment extends Fragment implements JassModelObserver {
 			textView.setTextColor(CardUtil
 					.color(playedCard.getCard().getSuit()));
 		}
+	}
+
+	public boolean onDrag(View table, DragEvent event) {
+		Drawable enterShape = getResources().getDrawable(
+				R.drawable.shape_droptarget);
+		Drawable normalShape = getResources().getDrawable(R.drawable.shape);
+
+		switch (event.getAction()) {
+		case DragEvent.ACTION_DRAG_STARTED:
+			// Do nothing
+			break;
+		case DragEvent.ACTION_DRAG_ENTERED:
+			table.setBackgroundDrawable(enterShape);
+			break;
+		case DragEvent.ACTION_DRAG_EXITED:
+			table.setBackgroundDrawable(normalShape);
+			break;
+		case DragEvent.ACTION_DROP:
+			// play card --> TODO: ugly implementation!
+			String cardString = event.getClipData().getItemAt(0).getText()
+					.toString();
+			Card card = deserializeCard(cardString);
+
+			if (!game.getCurrentMatch().isCardPlayable(card)) {
+				Toast.makeText(table.getContext(), "Card is not playable!",
+						Toast.LENGTH_SHORT).show();
+				View cardView = (View) event.getLocalState();
+				cardView.setVisibility(View.VISIBLE);
+				table.setBackgroundDrawable(normalShape);
+				hasDropped = false;
+			} else {
+				game.getCurrentMatch().playCard(card);
+				table.setBackgroundDrawable(normalShape);
+				hasDropped = true;
+			}
+			break;
+		case DragEvent.ACTION_DRAG_ENDED:
+			table.setBackgroundDrawable(normalShape);
+			if (!hasDropped) {
+				View view1 = (View) event.getLocalState();
+				view1.setVisibility(View.VISIBLE);
+			}
+		default:
+			break;
+		}
+		return true;
+	}
+
+	private Card deserializeCard(String string) {
+		String[] split = string.split("_");
+		return new Card(CardSuit.valueOf(split[0]), CardValue.valueOf(split[1]));
+
 	}
 
 }

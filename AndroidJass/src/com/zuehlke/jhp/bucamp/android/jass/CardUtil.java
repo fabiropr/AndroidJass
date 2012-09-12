@@ -22,7 +22,7 @@ public final class CardUtil {
 			return R.string.dimondsSymbol;
 		} else if (ansage.isTrumpf(CardSuit.CLUBS)) {
 			return R.string.clubsSymbol;
-		} else {
+		} else { 
 			return R.string.spadesSymbol;
 		}
 	}
