@@ -39,10 +39,8 @@ public class MainActivity extends Activity {
 
 		if (savedInstanceState == null || game == null) {
 			game = new JassEngine().createJassGame();
-			observableGame = new ObservableGame(game);
-		} else {
-			observableGame = new ObservableGame(game);
 		}
+		observableGame = new ObservableGame(game);
 		gameController = new GameController(observableGame);
 		observableGame.addObserver(gameController);
 		names = new HashMap<PlayerToken, Player>();
@@ -53,6 +51,7 @@ public class MainActivity extends Activity {
 		names.put(all.get(2), settings.getTeam1().getPlayer2());
 		names.put(all.get(3), settings.getTeam2().getPlayer2());
 
+		
 		observableGame.addObserver(new AnsageObserver(gameController
 				.getHumanPlayerToken(), this));
 	}
