@@ -14,9 +14,11 @@ import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import ch.mbaumeler.jass.core.Game;
@@ -29,6 +31,8 @@ import ch.mbaumeler.jass.core.game.PlayedCard;
 import ch.mbaumeler.jass.core.game.PlayerToken;
 import ch.mbaumeler.jass.extended.ui.JassModelObserver;
 import ch.mbaumeler.jass.extended.ui.ObserverableMatch.Event;
+
+import com.zuehlke.jhp.bucamp.android.jass.audio.Sample;
 
 public class TableFragment extends Fragment implements JassModelObserver,
 		OnDragListener {
@@ -65,6 +69,7 @@ public class TableFragment extends Fragment implements JassModelObserver,
 		setPlayerName(R.id.player4Name, all.get(3));
 
 		mainActivity.findViewById(R.id.tableFragment).setOnDragListener(this);
+
 	}
 
 	private void setPlayerName(int id, PlayerToken token) {
@@ -86,6 +91,17 @@ public class TableFragment extends Fragment implements JassModelObserver,
 	}
 
 	public void updated(Event arg0, PlayerToken arg1, Object arg2) {
+		TableLayout tableLayout = (TableLayout) mainActivity
+				.findViewById(R.id.tableLayout);
+
+		if (tableLayout != null) {
+			tableLayout.setOnClickListener(new OnClickListener() {
+
+				public void onClick(View arg0) {
+					mainActivity.refresh(null);
+				}
+			});
+		}
 		Match currentMatch = game.getCurrentMatch();
 		Ansage ansage = currentMatch.getAnsage();
 		if (ansage != null) {
@@ -231,7 +247,8 @@ public class TableFragment extends Fragment implements JassModelObserver,
 	public boolean onDrag(View table, DragEvent event) {
 		Drawable enterShape = getResources().getDrawable(
 				R.drawable.shape_droptarget);
-		Drawable normalShape = getResources().getDrawable(R.drawable.shape);
+		Drawable normalShape = getResources().getDrawable(
+				R.drawable.table_texture);
 
 		switch (event.getAction()) {
 		case DragEvent.ACTION_DRAG_STARTED:
@@ -257,6 +274,7 @@ public class TableFragment extends Fragment implements JassModelObserver,
 				table.setBackgroundDrawable(normalShape);
 				hasDropped = false;
 			} else {
+				mainActivity.getAudioManager().play(Sample.PLAY_CARD);
 				game.getCurrentMatch().playCard(card);
 				table.setBackgroundDrawable(normalShape);
 				hasDropped = true;

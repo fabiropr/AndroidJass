@@ -1,9 +1,9 @@
 <resources>
 
-    <string name="app_name">Test</string>
+    <string name="app_name">Jass Game</string>
     <string name="hello_world">Hello world!</string>
     <string name="setup_actionbar_settings">Settings</string>
-    <string name="setup_activity_title">Setup Jass Game</string>
+    <string name="setup_activity_title">Jass Game</string>
     <string name="setup_settings_tv_points">Points</string>
     <string name="setup_team_player1_name">Player 1 Name</string>
     <string name="setup_team_chkb_player_type">AI</string>
@@ -24,5 +24,13 @@
     <string name="score_you_title">You:</string>
     <string name="score_rival_title">Rival:</string>
     <string name="score_points_initial">0</string>
+    <string name="game_finished_dialog_title">Game finished!</string>
+    <string name="game_finished_dialog_ok">Start new game</string>
+    <string name="game_finished_dialog_cancel">Settings</string>
+    <string name="team_won_message">Your team won</string>
+    <string name="team_lost_message">Your team lost</string>
+    <string name="menu_item_game_speed">Game Speed</string>
+    <string name="game_speed_setting_dialog_title">Game Speed Setting</string>
+    <string name="game_speed_setting_dialog_message">Set the virtual player game speed in [ms]</string>
 
 </resources>
